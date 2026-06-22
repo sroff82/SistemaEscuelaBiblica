@@ -8,19 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     
-    <script src="https://unpkg.com/@babel/standalone@7.23.12/babel.min.js"></script>
-
-    <script>
-        Babel.registerPreset('classic-react', {
-            presets: [
-                [Babel.availablePresets['env'], { modules: false }],
-                [Babel.availablePresets['react'], { runtime: 'classic' }]
-            ]
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.8/babel.min.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -33,21 +24,22 @@
 
     <script src="config/firebase.js"></script>
     <script src="models/usuario.js"></script>
+    
     <script src="services/authService.js"></script>
     <script src="services/maestrosService.js"></script>
     <script src="services/alumnosService.js"></script>
     <script src="services/logisticaService.js"></script>
 
-    <script type="text/babel" data-presets="classic-react" src="views/AdminDashboard.js"></script>
-    <script type="text/babel" data-presets="classic-react" src="views/LogisticaDashboard.js"></script>
-    <script type="text/babel" data-presets="classic-react" src="views/MaestroDashboard.js"></script>
-    <script type="text/babel" data-presets="classic-react" src="views/SecretariaDashboard.js"></script>
-    <script type="text/babel" data-presets="classic-react" src="views/TesoreroDashboard.js"></script>
+    <script type="text/babel" data-presets="react" src="views/AdminDashboard.js"></script>
+    <script type="text/babel" data-presets="react" src="views/LogisticaDashboard.js"></script>
+    <script type="text/babel" data-presets="react" src="views/MaestroDashboard.js"></script>
+    <script type="text/babel" data-presets="react" src="views/SecretariaDashboard.js"></script>
+    <script type="text/babel" data-presets="react" src="views/TesoreroDashboard.js"></script>
 
-    <script type="text/babel" data-presets="classic-react" src="views/loginView.js"></script>
-    <script type="text/babel" data-presets="classic-react" src="views/dashboardView.js"></script>
+    <script type="text/babel" data-presets="react" src="views/loginView.js"></script>
+    <script type="text/babel" data-presets="react" src="views/dashboardView.js"></script>
     
-    <script type="text/babel" data-presets="classic-react" src="app.js"></script>
+    <script type="text/babel" data-presets="react" src="app.js"></script>
 
     <script>emailjs.init("7l-eHxFpu6r0bbHUV");</script>
 </body>
