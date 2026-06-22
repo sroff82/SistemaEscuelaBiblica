@@ -10,7 +10,17 @@
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone@7.23.12/babel.min.js"></script>
+
+    <script>
+        Babel.registerPreset('classic-react', {
+            presets: [
+                [Babel.availablePresets['env'], { modules: false }],
+                [Babel.availablePresets['react'], { runtime: 'classic' }]
+            ]
+        });
+    </script>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -22,21 +32,22 @@
     <div id="root"></div>
 
     <script src="config/firebase.js"></script>
+    <script src="models/usuario.js"></script>
     <script src="services/authService.js"></script>
     <script src="services/maestrosService.js"></script>
     <script src="services/alumnosService.js"></script>
     <script src="services/logisticaService.js"></script>
 
-    <script type="text/babel" src="views/AdminDashboard.js"></script>
-    <script type="text/babel" src="views/LogisticaDashboard.js"></script>
-    <script type="text/babel" src="views/MaestroDashboard.js"></script>
-    <script type="text/babel" src="views/SecretariaDashboard.js"></script>
-    <script type="text/babel" src="views/TesoreroDashboard.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/AdminDashboard.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/LogisticaDashboard.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/MaestroDashboard.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/SecretariaDashboard.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/TesoreroDashboard.js"></script>
 
-    <script type="text/babel" src="views/loginView.js"></script>
-    <script type="text/babel" src="views/dashboardView.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/loginView.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="views/dashboardView.js"></script>
     
-    <script type="text/babel" src="app.js"></script>
+    <script type="text/babel" data-presets="classic-react" src="app.js"></script>
 
     <script>emailjs.init("7l-eHxFpu6r0bbHUV");</script>
 </body>
