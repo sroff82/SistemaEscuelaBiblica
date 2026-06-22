@@ -1,6 +1,54 @@
 const { useState, useEffect } = React;
 const { AuthService, MaestrosService, AlumnosService, LogisticaService, LoginView, DashboardView } = window;
 
+// =========================================================================
+// LÍMITE DE ERRORES (ERROR BOUNDARY)
+// =========================================================================
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null, errorInfo: null };
+    }
+
+    static getDerivedStateFromError(error) {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        this.setState({ error: error, errorInfo: errorInfo });
+        console.error("Error capturado por ErrorBoundary:", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="min-h-screen bg-rose-50 p-8 flex flex-col items-center justify-center text-slate-800">
+                    <div className="bg-white p-6 rounded-2xl shadow-xl border-l-4 border-rose-500 max-w-2xl w-full">
+                        <div className="flex items-center space-x-3 mb-4 text-rose-600">
+                            <i className="fas fa-exclamation-triangle text-3xl"></i>
+                            <h2 className="text-xl font-black">Error Crítico del Sistema</h2>
+                        </div>
+                        <p className="text-sm font-bold text-slate-500 mb-4">El sistema ha detenido su ejecución para proteger los datos. Detalles técnicos:</p>
+                        
+                        <div className="bg-slate-900 text-rose-400 p-4 rounded-xl overflow-x-auto text-xs font-mono mb-4">
+                            <strong>{this.state.error && this.state.error.toString()}</strong>
+                            <br/><br/>
+                            <span className="text-slate-400">
+                                {this.state.errorInfo && this.state.errorInfo.componentStack}
+                            </span>
+                        </div>
+                        
+                        <button onClick={() => window.location.reload()} className="px-5 py-3 bg-rose-500 text-white font-bold rounded-xl shadow-md hover:bg-rose-600 transition-colors">
+                            Forzar Reinicio de Aplicación
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
+
 function App() {
     const [usuario, setUsuario] = useState(null);
     const [datosUsuarioActual, setDatosUsuarioActual] = useState(null);
@@ -562,5 +610,10 @@ function App() {
         </div>
     );
 }
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+    <ErrorBoundary>
+        <App />
+    </ErrorBoundary>
+);
