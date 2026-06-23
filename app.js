@@ -112,14 +112,6 @@ function App() {
         }
     }, []);
 
-    // --- NUEVA FUNCIÓN DE EXPULSIÓN POR MANTENIMIENTO ---
-    useEffect(() => {
-        if (mantenimiento && usuario && usuario !== 'ADMIN' && !isSandbox) {
-            alert("🛠️ El Director ha puesto el sistema en mantenimiento.\n\nPor seguridad, tu sesión ha sido cerrada y has sido expulsado del sistema. Por favor, vuelve a iniciar sesión más tarde.");
-            handleLogout();
-        }
-    }, [mantenimiento, usuario, isSandbox]);
-
     useEffect(() => {
         if (usuario && usuario !== 'ADMIN' && datosUsuarioActual?.id) {
             if (isSandbox) return; 
@@ -498,7 +490,30 @@ function App() {
     }
 
     if (mantenimiento && usuario !== 'ADMIN' && !isSandbox) { 
-        return ( <div className="flex flex-col items-center justify-center min-h-[100dvh] max-w-md mx-auto bg-slate-900 p-8 text-center shadow-2xl animate-in zoom-in-95"><div className="w-32 h-32 bg-rose-500/20 text-rose-500 rounded-full flex items-center justify-center text-6xl mb-8 animate-pulse shadow-[0_0_40px_rgba(244,63,94,0.3)]"><i className="fas fa-tools"></i></div><h1 className="text-3xl font-black text-white mb-4">Sistema en<br/>Mantenimiento</h1><p className="text-slate-400 text-sm leading-relaxed mb-10">El Director está realizando ajustes.</p><button onClick={handleLogout} className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-2xl transition-colors">Cerrar Sesión</button></div> ); 
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[100dvh] px-6 bg-slate-100 py-10 animate-in fade-in duration-500">
+                <div className="w-full max-w-sm bg-white p-8 rounded-[32px] shadow-2xl animate-in zoom-in-95 relative overflow-hidden flex flex-col items-center text-center border border-slate-100">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-[100px] pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-rose-50 rounded-tr-[80px] pointer-events-none"></div>
+                    
+                    <div className="w-24 h-24 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center text-5xl mb-6 shadow-inner relative z-10 animate-pulse">
+                        <i className="fas fa-tools"></i>
+                    </div>
+                    
+                    <h1 className="text-2xl font-black text-slate-800 mb-3 relative z-10">Sistema en Pausa</h1>
+                    
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 relative z-10 mb-2">
+                        <p className="text-sm font-bold text-slate-500 leading-relaxed">
+                            El Director está realizando ajustes importantes en el sistema.
+                        </p>
+                    </div>
+                    
+                    <p className="text-xs text-slate-400 font-bold mt-4 relative z-10 flex items-center">
+                        <i className="fas fa-spinner fa-spin mr-2 text-indigo-400"></i> Por favor, espera un momento...
+                    </p>
+                </div>
+            </div>
+        ); 
     }
 
     return (
