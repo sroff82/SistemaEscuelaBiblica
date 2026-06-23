@@ -5,6 +5,7 @@ function MaestroDashboard({
     onOpenAlumnoModal, onEditAlumno, onDeleteAlumno, onSaveAsistencia
 }) {
     const [vistaActual, setVistaActual] = useState('inicio'); 
+    
     const [subVistaGestion, setSubVistaGestion] = useState('directorio'); 
     const [mesCumpleExpandido, setMesCumpleExpandido] = useState(null);
 
@@ -17,6 +18,7 @@ function MaestroDashboard({
     const [edadMin, setEdadMin] = useState('');
     const [edadMax, setEdadMax] = useState('');
 
+    // NUEVO ESTADO PARA ACORDEÓN DE HISTORIAL DE CLASES
     const [mesHistorialExp, setMesHistorialExp] = useState(null);
 
     const [modalCambioCampo, setModalCambioCampo] = useState(false);
@@ -25,9 +27,6 @@ function MaestroDashboard({
     const camposDisponibles = ["La Isla", "Las Delicias", "El Amatal", "El Manguito", "Buenos Aires", "Corozal #1", "El Porvenir", "El Caulote", "Corozal #2", "Valle Encantado", "La Playa"];
 
     const historialVisible = historialAsistencias.filter(h => !h.esReset);
-
-    // DEFINICIÓN CRÍTICA FALTANTE RESTAURADA
-    const isSandbox = datosUsuarioActual?.id === 'user_sandbox_secreto';
 
     const formatoFecha = (f) => {
         if (!f) return '';
@@ -86,7 +85,7 @@ function MaestroDashboard({
     const asistenciaMostrar = asistenciaHoy || regOtroDiaFinde;
     const asistenciaTomada = !!asistenciaMostrar;
     const esDeOtroDia = asistenciaTomada && asistenciaMostrar.fecha !== dtHoyStr;
-    const soyElAutor = asistenciaTomada && asistenciaMostrar.registradoPorId === datosUsuarioActual?.id;
+    const soyElAutor = asistenciaTomada && asistenciaMostrar.registradoPorId === datosUsuarioActual.id;
     
     const estaBloqueada = asistenciaTomada && (!soyElAutor || esDeOtroDia);
 
@@ -117,7 +116,7 @@ function MaestroDashboard({
     const cambiarCampo = async (nuevoCampo) => {
         if (!nuevoCampo || nuevoCampo === datosUsuarioActual.campo) return;
         
-        if (isSandbox) {
+        if (datosUsuarioActual.id === 'user_sandbox_secreto') {
             alert("🔒 MODO DESARROLLADOR\n\nCambio de campo simulado con éxito a: " + nuevoCampo);
             setModalCambioCampo(false);
             return;
@@ -150,6 +149,7 @@ function MaestroDashboard({
 
     const mesesNombres = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     
+    // --- FUNCIÓN PARA AGRUPAR EL HISTORIAL DEL MAESTRO POR MES ---
     const agruparHistorialPorMes = (historial) => {
         if (!historial) return [];
         const grupos = {};
@@ -215,14 +215,13 @@ function MaestroDashboard({
     };
     const cumpleanosAgrupados = agruparCumpleanos();
 
+    const NavButton = ({ id, icon, label, width = 'w-[70px]' }) => (
+        <button onClick={() => setVistaActual(id)} className={`flex flex-col items-center justify-center ${width} h-14 rounded-2xl transition-all ${vistaActual === id ? 'text-indigo-600 bg-indigo-50 font-black' : 'text-slate-400 hover:text-slate-600 font-bold'}`}>
+            <i className={`fas ${icon} text-xl mb-1 ${vistaActual === id ? 'animate-bounce' : ''}`}></i><span className="text-[9px] tracking-wide">{label}</span>
+        </button>
+    );
+    
     const progInicio = calcProgreso(leccionProgreso);
-    const miCampoActual = datosUsuarioActual?.campo;
-
-    let campoDestinoFijo = null;
-    if (miCampoActual === "El Caulote") campoDestinoFijo = "Corozal #2";
-    if (miCampoActual === "Corozal #2") campoDestinoFijo = "El Caulote";
-
-    const tienePermisoDeCambio = isSandbox || campoDestinoFijo !== null;
 
     const historialRankingFiltrado = historialVisible.filter(ha => {
         if (!fechaInicioRanking && !fechaFinRanking) return true;
@@ -248,11 +247,14 @@ function MaestroDashboard({
         return true;
     });
 
-    const NavButton = ({ id, icon, label }) => (
-        <button onClick={() => setVistaActual(id)} className={`flex flex-col items-center justify-center w-[70px] h-14 rounded-2xl transition-all ${vistaActual === id ? 'text-indigo-600 bg-indigo-50 font-black' : 'text-slate-400 hover:text-slate-600 font-bold'}`}>
-            <i className={`fas ${icon} text-xl mb-1 ${vistaActual === id ? 'animate-bounce' : ''}`}></i><span className="text-[9px] tracking-wide">{label}</span>
-        </button>
-    );
+    const isSandbox = datosUsuarioActual?.id === 'user_sandbox_secreto';
+    const miCampoActual = datosUsuarioActual?.campo;
+
+    let campoDestinoFijo = null;
+    if (miCampoActual === "El Caulote") campoDestinoFijo = "Corozal #2";
+    if (miCampoActual === "Corozal #2") campoDestinoFijo = "El Caulote";
+
+    const tienePermisoDeCambio = isSandbox || campoDestinoFijo !== null;
 
     let contenidoMaestro;
 
@@ -566,6 +568,7 @@ function MaestroDashboard({
                         </>
                     )}
                     
+                    {/* NUEVO HISTORIAL DE CLASES EN MODO ACORDEÓN POR MESES PARA EL MAESTRO */}
                     {subVistaReporte === 'historial' && (
                         <>
                             <h3 className="text-sm font-bold text-slate-700 mb-4 px-2">Días Anteriores (Solo Lectura)</h3>
